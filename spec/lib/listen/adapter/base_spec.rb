@@ -8,6 +8,10 @@ describe Adapter::Base do
     def initialize(*args)
       super(*args)
     end
+
+    def _run
+      raise RuntimeError.new('Exception in Adapter')
+    end
   end
 
   subject { FakeAdapter.new(mq: mq, directories: []) }
@@ -25,6 +29,14 @@ describe Adapter::Base do
           with(:dir, dir, 'path', recursive: true)
 
         subject.send(:_queue_change, :dir, dir, 'path', recursive: true)
+      end
+    end
+  end
+
+  describe 'start' do
+    context 'Exception in Thread' do
+      it 'will be reraised in Thread.main' do
+        expect { subject.start; sleep 1 }.to raise_error(RuntimeError)
       end
     end
   end

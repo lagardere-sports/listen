@@ -58,7 +58,7 @@ module Listen
             _run
           rescue
             _log_exception 'run() in thread failed: %s:%s'
-            raise
+            Thread.main.raise
           end
         end
       end
