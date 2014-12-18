@@ -21,10 +21,6 @@ RSpec.describe Listen::Adapter::Base do
     def _process_event(dir, event)
       _queue_change(:file, dir, event[:file], cookie: event[:cookie])
     end
-
-    def _run
-      raise RuntimeError.new('Exception in Adapter')
-    end
   end
 
   let(:dir1) { instance_double(Pathname, 'dir1', to_s: '/foo/dir1') }
@@ -100,7 +96,7 @@ RSpec.describe Listen::Adapter::Base do
   describe 'start' do
     context 'Exception in Thread' do
       it 'will be reraised in Thread.main' do
-        expect { subject.start; sleep 1 }.to raise_error(RuntimeError)
+        expect { subject.start; sleep 1 }.to raise_error(NotImplementedError)
       end
     end
   end

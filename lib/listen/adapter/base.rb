@@ -76,11 +76,11 @@ module Listen
               _timed('Record.build()') { snapshot.record.build }
             end
             _run
-          rescue
+          rescue => e
             msg = 'run() in thread failed: %s:\n'\
               ' %s\n\ncalled from:\n %s'
             _log_exception(msg, calling_stack)
-            Thread.main.raise
+            Thread.main.raise e
           end
         end
       end
