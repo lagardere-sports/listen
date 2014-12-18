@@ -56,9 +56,9 @@ module Listen
         Listen::Internals::ThreadPool.add do
           begin
             _run
-          rescue
+          rescue => e
             _log_exception 'run() in thread failed: %s:%s'
-            Thread.main.raise
+            Thread.main.raise e
           end
         end
       end

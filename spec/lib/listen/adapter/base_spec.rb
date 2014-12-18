@@ -3,6 +3,7 @@ require 'spec_helper'
 include Listen
 
 describe Adapter::Base do
+  class QueueOverflowError < RuntimeError; end
 
   class FakeAdapter < described_class
     def initialize(*args)
@@ -10,7 +11,7 @@ describe Adapter::Base do
     end
 
     def _run
-      raise RuntimeError.new('Exception in Adapter')
+      raise QueueOverflowError.new('Exception in Adapter')
     end
   end
 
@@ -36,7 +37,7 @@ describe Adapter::Base do
   describe 'start' do
     context 'Exception in Thread' do
       it 'will be reraised in Thread.main' do
-        expect { subject.start; sleep 1 }.to raise_error(RuntimeError)
+        expect { subject.start; sleep 1 }.to raise_error(QueueOverflowError)
       end
     end
   end
